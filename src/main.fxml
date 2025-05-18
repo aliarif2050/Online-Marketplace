@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.fxml.FXMLLoader?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.AnchorPane?>
 
-<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-         prefHeight="400.0" prefWidth="600.0"
-         tabClosingPolicy="UNAVAILABLE"
-         xmlns="http://javafx.com/javafx/23.0.1"
-         xmlns:fx="http://javafx.com/fxml/1"
-         fx:controller="MainController">
+<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #F5F5DC#E6E6FA;" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MainController">
 
     <!-- Define ToggleGroups at the root level -->
     <fx:define>
-        <ToggleGroup fx:id="authToggleGroup"/>
-        <ToggleGroup fx:id="roleToggleGroup"/>
+        <ToggleGroup fx:id="authToggleGroup" />
+        <ToggleGroup fx:id="roleToggleGroup" />
     </fx:define>
 
     <tabs>
@@ -23,17 +24,23 @@
             <content>
                 <AnchorPane fx:id="tab1" prefHeight="180.0" prefWidth="200.0">
                     <children>
-                        <Label layoutX="109.0" layoutY="61.0" text="Name: " />
-                        <Label layoutX="109.0" layoutY="87.0" text="Password" />
-                        <TextField fx:id="nameField" layoutX="195.0" layoutY="57.0" promptText="Enter Name" />
-                        <PasswordField fx:id="passwordField" layoutX="195.0" layoutY="83.0" promptText="Enter Password" />
-                        <Button layoutX="246.0" layoutY="173.0" mnemonicParsing="false" onAction="#confirmRes" text="Confirm" />
+                        <Label layoutX="129.0" layoutY="53.0" text="Name: " />
+                        <Label layoutX="121.0" layoutY="96.0" text="Password:" />
+                        <TextField fx:id="nameField" layoutX="218.0" layoutY="49.0" promptText="Enter Name" />
+                        <PasswordField fx:id="passwordField" layoutX="218.0" layoutY="92.0" promptText="Enter Password" />
+                        <Button layoutX="263.0" layoutY="209.0" mnemonicParsing="false" onAction="#confirmRes" text="Confirm" />
 
-                        <RadioButton fx:id="regis_radio" layoutX="188.0" layoutY="122.0" mnemonicParsing="false" text="Register" toggleGroup="$authToggleGroup" />
-                        <RadioButton fx:id="login_radio" layoutX="275.0" layoutY="122.0" mnemonicParsing="false" text="Login" toggleGroup="$authToggleGroup" />
+                        <RadioButton fx:id="regis_radio" layoutX="208.0" layoutY="139.0" mnemonicParsing="false" text="Register">
+                     <toggleGroup>
+                        <ToggleGroup fx:id="authToggleGroup" />
+                     </toggleGroup></RadioButton>
+                        <RadioButton fx:id="login_radio" layoutX="307.0" layoutY="139.0" mnemonicParsing="false" text="Login" toggleGroup="$authToggleGroup" />
 
-                        <RadioButton fx:id="buyer_radio" layoutX="188.0" layoutY="149.0" mnemonicParsing="false" text="Buyer " toggleGroup="$roleToggleGroup" />
-                        <RadioButton fx:id="seller_radio" layoutX="292.0" layoutY="149.0" mnemonicParsing="false" text="Seller" toggleGroup="$roleToggleGroup" />
+                        <RadioButton fx:id="buyer_radio" layoutX="208.0" layoutY="177.0" mnemonicParsing="false" text="Buyer ">
+                     <toggleGroup>
+                        <ToggleGroup fx:id="roleToggleGroup" />
+                     </toggleGroup></RadioButton>
+                        <RadioButton fx:id="seller_radio" layoutX="307.0" layoutY="177.0" mnemonicParsing="false" text="Seller" toggleGroup="$roleToggleGroup" />
                     </children>
                 </AnchorPane>
             </content>
