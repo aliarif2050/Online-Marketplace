@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.AnchorPane?>
+<AnchorPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ReportController" prefHeight="400.0" prefWidth="600.0">
+    <children>
+        <Label layoutX="50" layoutY="30" text="Marketplace Report" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+        <TextArea fx:id="reportArea" layoutX="50" layoutY="70" prefWidth="500" prefHeight="250"/>
+        <Button layoutX="50" layoutY="330" text="Generate Report" onAction="#generateReport"/>
+    </children>
+</AnchorPane>

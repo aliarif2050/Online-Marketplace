@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.fxml.FXMLLoader?>
+
+<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+         prefHeight="400.0" prefWidth="600.0"
+         tabClosingPolicy="UNAVAILABLE"
+         xmlns="http://javafx.com/javafx/23.0.1"
+         xmlns:fx="http://javafx.com/fxml/1"
+         fx:controller="MainController">
+
+    <!-- Define ToggleGroups at the root level -->
+    <fx:define>
+        <ToggleGroup fx:id="authToggleGroup"/>
+        <ToggleGroup fx:id="roleToggleGroup"/>
+    </fx:define>
+
+    <tabs>
+        <!-- Register/Login Tab (inline UI) -->
+        <Tab text="Register/Login">
+            <content>
+                <AnchorPane fx:id="tab1" prefHeight="180.0" prefWidth="200.0">
+                    <children>
+                        <Label layoutX="109.0" layoutY="61.0" text="Name: " />
+                        <Label layoutX="109.0" layoutY="87.0" text="Password" />
+                        <TextField fx:id="nameField" layoutX="195.0" layoutY="57.0" promptText="Enter Name" />
+                        <PasswordField fx:id="passwordField" layoutX="195.0" layoutY="83.0" promptText="Enter Password" />
+                        <Button layoutX="246.0" layoutY="173.0" mnemonicParsing="false" onAction="#confirmRes" text="Confirm" />
+
+                        <RadioButton fx:id="regis_radio" layoutX="188.0" layoutY="122.0" mnemonicParsing="false" text="Register" toggleGroup="$authToggleGroup" />
+                        <RadioButton fx:id="login_radio" layoutX="275.0" layoutY="122.0" mnemonicParsing="false" text="Login" toggleGroup="$authToggleGroup" />
+
+                        <RadioButton fx:id="buyer_radio" layoutX="188.0" layoutY="149.0" mnemonicParsing="false" text="Buyer " toggleGroup="$roleToggleGroup" />
+                        <RadioButton fx:id="seller_radio" layoutX="292.0" layoutY="149.0" mnemonicParsing="false" text="Seller" toggleGroup="$roleToggleGroup" />
+                    </children>
+                </AnchorPane>
+            </content>
+        </Tab>
+
+        <!-- Buy Tab -->
+        <Tab text="Buy">
+            <content>
+                <!-- Loads buy.fxml which should have BuyController -->
+                <fx:include source="buy.fxml" />
+            </content>
+        </Tab>
+
+        <!-- Sell Tab -->
+        <Tab text="Sell">
+            <content>
+                <!-- Loads product.fxml which should have ProductController -->
+                <fx:include source="product.fxml" />
+            </content>
+        </Tab>
+
+        <!-- Report Tab -->
+        <Tab text="Report">
+            <content>
+                <!-- Loads report.fxml which should have ReportController -->
+                <fx:include source="report.fxml" />
+            </content>
+        </Tab>
+    </tabs>
+</TabPane>
