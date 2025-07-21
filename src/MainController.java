@@ -1,4 +1,5 @@
 // MainController.java
+import io.github.cdimascio.dotenv.Dotenv;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import java.sql.*;
@@ -11,8 +12,6 @@ public class MainController {
     @FXML private RadioButton buyer_radio;
     @FXML private RadioButton seller_radio;
     @FXML public static String currentUser;
-
-
     @FXML
     private void confirmRes() {
         String username = nameField.getText().trim();
@@ -31,9 +30,16 @@ public class MainController {
             showAlert("Error", "Please select Register or Login.");
         }
     }
+    private static final Dotenv dotenv = Dotenv.configure()
+            .directory("src") // Make sure .env is in 'src' folder
+            .ignoreIfMissing()
+            .load();
 
     private void registerUser(String username, String password) {
-        try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/mydb", "root", "123password456")) {
+        String url = dotenv.get("DB_URL");
+        String user = dotenv.get("DB_USER");
+        String pass = dotenv.get("DB_PASS");
+        try (Connection conn = DriverManager.getConnection(url,user,pass)) {
             String role = buyer_radio.isSelected() ? "buyer" : seller_radio.isSelected() ? "seller" : "";
             if (role.isEmpty()) {
                 showAlert("Error", "Please select Buyer or Seller.");
@@ -51,7 +57,10 @@ public class MainController {
     }
 
     private void loginUser(String username, String password) {
-        try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/mydb", "root", "123password456")) {
+        String url = dotenv.get("DB_URL");
+        String user = dotenv.get("DB_USER");
+        String pass = dotenv.get("DB_PASS");
+        try (Connection conn = DriverManager.getConnection(url,user , pass)) {
             PreparedStatement stmt = conn.prepareStatement("SELECT * FROM users WHERE username = ? AND password = ?");
             stmt.setString(1, username);
             stmt.setString(2, password);

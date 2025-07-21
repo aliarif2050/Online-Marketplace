@@ -15,7 +15,7 @@
     <!-- Define ToggleGroups at the root level -->
     <fx:define>
         <ToggleGroup fx:id="authToggleGroup" />
-        <ToggleGroup fx:id="roleToggleGroup" />
+<!--        <ToggleGroup fx:id="roleToggleGroup" />-->
     </fx:define>
 
     <tabs>

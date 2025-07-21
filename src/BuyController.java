@@ -1,4 +1,4 @@
-
+import io.github.cdimascio.dotenv.Dotenv;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -36,9 +36,18 @@ public class BuyController {
 
     private ObservableList<Product> productList = FXCollections.observableArrayList();
 
+    // Load .env variables only once
+    private static final Dotenv dotenv = Dotenv.configure()
+            .directory("src") // Make sure .env is in 'src' folder
+            .ignoreIfMissing()
+            .load();
+
     private Connection connect() {
         try {
-            return DriverManager.getConnection("jdbc:mysql://localhost:3306/mydb", "root", "123password456");
+            String url = dotenv.get("DB_URL");
+            String user = dotenv.get("DB_USER");
+            String pass = dotenv.get("DB_PASS");
+            return DriverManager.getConnection(url, user, pass);
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
@@ -47,20 +56,16 @@ public class BuyController {
 
     @FXML
     public void initialize() {
-        // Setup table columns
         nameCol.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
         descCol.setCellValueFactory(cellData -> cellData.getValue().descriptionProperty());
         priceCol.setCellValueFactory(cellData -> cellData.getValue().priceProperty().asObject());
         sellerCol.setCellValueFactory(cellData -> cellData.getValue().sellerProperty());
 
-        // Populate choice box
         searchChoiceBox.getItems().addAll("Name", "Description", "Seller");
-        searchChoiceBox.setValue("Name"); // default
+        searchChoiceBox.setValue("Name");
 
-        // Load all products initially
         loadProducts("");
 
-        // Event handlers
         searchButton.setOnAction(e -> performSearch());
         buyButton.setOnAction(e -> performBuy());
     }
@@ -102,7 +107,7 @@ public class BuyController {
         if (!keyword.isEmpty()) {
             loadProducts("WHERE " + field + " LIKE '%" + keyword + "%'");
         } else {
-            loadProducts(""); // load all
+            loadProducts("");
         }
     }
 
@@ -116,18 +121,16 @@ public class BuyController {
         try (Connection conn = connect()) {
             conn.setAutoCommit(false);
 
-            // Insert into sold_products
-            String insertSQL = "INSERT INTO sold_products (name, description, price, seller,buyer) VALUES (?, ?, ?, ?,?)";
+            String insertSQL = "INSERT INTO sold_products (name, description, price, seller, buyer) VALUES (?, ?, ?, ?, ?)";
             try (PreparedStatement insertStmt = conn.prepareStatement(insertSQL)) {
                 insertStmt.setString(1, selected.getName());
                 insertStmt.setString(2, selected.getDescription());
                 insertStmt.setDouble(3, selected.getPrice());
                 insertStmt.setString(4, selected.getSeller());
-                insertStmt.setString(5,MainController.currentUser);
+                insertStmt.setString(5, MainController.currentUser);
                 insertStmt.executeUpdate();
             }
 
-            // Delete from products
             String deleteSQL = "DELETE FROM products WHERE id = ?";
             try (PreparedStatement deleteStmt = conn.prepareStatement(deleteSQL)) {
                 deleteStmt.setInt(1, selected.getId());
@@ -136,7 +139,7 @@ public class BuyController {
 
             conn.commit();
             showAlert("Success", "Product purchased successfully!");
-            loadProducts(""); // Refresh table
+            loadProducts("");
 
         } catch (SQLException e) {
             e.printStackTrace();

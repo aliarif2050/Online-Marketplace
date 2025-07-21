@@ -1,3 +1,4 @@
+import io.github.cdimascio.dotenv.Dotenv;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -19,7 +20,6 @@ public class ProductController {
     @FXML private TableColumn<Product, String> colSeller;
 
     private ObservableList<Product> productList = FXCollections.observableArrayList();
-
     public static String currentSeller;
 
 //    public void setCurrentSeller(String seller) {
@@ -42,8 +42,21 @@ public class ProductController {
         loadProducts();
     }
 
-    private Connection connect() throws SQLException {
-        return DriverManager.getConnection("jdbc:mysql://localhost:3306/mydb", "root", "123password456");
+    private static final Dotenv dotenv = Dotenv.configure()
+            .directory("src") // Make sure .env is in 'src' folder
+            .ignoreIfMissing()
+            .load();
+
+    private Connection connect() {
+        try {
+            String url = dotenv.get("DB_URL");
+            String user = dotenv.get("DB_USER");
+            String pass = dotenv.get("DB_PASS");
+            return DriverManager.getConnection(url, user, pass);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     private void loadProducts() {

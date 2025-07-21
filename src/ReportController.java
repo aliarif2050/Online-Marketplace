@@ -1,3 +1,4 @@
+import io.github.cdimascio.dotenv.Dotenv;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.Alert;
@@ -7,8 +8,21 @@ public class ReportController {
 
     @FXML private TextArea reportArea;
 
-    private Connection connect() throws Exception {
-        return DriverManager.getConnection("jdbc:mysql://localhost:3306/mydb", "root", "123password456");
+    private static final Dotenv dotenv = Dotenv.configure()
+            .directory("src") // Make sure .env is in 'src' folder
+            .ignoreIfMissing()
+            .load();
+
+    private Connection connect() {
+        try {
+            String url = dotenv.get("DB_URL");
+            String user = dotenv.get("DB_USER");
+            String pass = dotenv.get("DB_PASS");
+            return DriverManager.getConnection(url, user, pass);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @FXML

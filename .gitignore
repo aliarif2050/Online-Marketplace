@@ -2,7 +2,8 @@
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/
-
+# Environment variables
+src/.env
 ### Eclipse ###
 .apt_generated
 .classpath
@@ -27,3 +28,4 @@ bin/
 
 ### Mac OS ###
 .DS_Store
+
